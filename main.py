@@ -3,6 +3,7 @@ import re
 import glob
 import pypandoc
 from pathlib import Path
+import shutil
 
 def render(template, **context):
     def replacer(match):
@@ -10,41 +11,40 @@ def render(template, **context):
         return str(eval(expr, {}, context))
     return re.sub(r"\{\{(.*?)\}\}", replacer, template)
 
-def get_post_paths():
-    posts = glob.glob("./posts/*-*.md")
-    return posts
+def get_markdown_paths(folder):
+    return glob.glob(f"{folder}/*.md")
 
-def get_page_paths():
-    pages = glob.glob("./pages/*.md")
-    return pages
+def load_template(path="./templates/general.html"):
+    with open(path, "r") as f:
+        return f.read()
 
-os.system("rm -rf html")
-os.system("mkdir -p html/post/")
+def convert_markdown(file_path):
+    return pypandoc.convert_file(file_path, "html")
 
-for post in get_post_paths():
-    post_stem = Path(post).stem
-    timestamp = post_stem.split("-")[-1]
-    html_content = pypandoc.convert_file(post, "html")
+def generate(src_folder, dst_folder):
+    Path(dst_folder).mkdir(parents=True, exist_ok=True)
+    template = load_template()
 
-    template = ""
-    with open("./templates/general.html", "r") as f:
-        template = f.read()
+    for md_file in get_markdown_paths(src_folder):
+        stem = Path(md_file).stem
 
-    context = {k: v for k, v in locals().items() if k != "template"}
-    html = render(render(template, **context), **context)
+        timestamp = stem.split("-")[-1] if "-" in stem else None
+        html_content = convert_markdown(md_file)
 
-    with open(f"./html/post/{post_stem}.html", "w") as f:
-        f.write(html)
+        context = {
+            "timestamp": timestamp,
+            "html_content": html_content
+        }
 
-for page in get_page_paths():
-    page_stem = Path(page).stem
-    html_content = pypandoc.convert_file(page, "html")
-    template = ""
-    with open("./templates/general.html", "r") as f:
-        template = f.read()
+        html = render(render(template, **context), **context)
+        out_file = Path(dst_folder) / f"{stem}.html"
+        with open(out_file, "w") as f:
+            f.write(html)
 
-    context = {k: v for k, v in locals().items() if k != "template"}
-    html = render(render(template, **context))
-    with open(f"./html/{page_stem}.html", "w") as f:
-        f.write(html)
+def build():
+    shutil.rmtree("html", ignore_errors=True)
+    generate("./posts", "./html/post")
+    generate("./pages", "./html")
 
+if __name__ == "__main__":
+    build()
