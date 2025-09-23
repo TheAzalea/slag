@@ -1,0 +1,30 @@
+* {
+  font-family: monospace;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #202020;
+  color: #eeeeee;
+}
+
+#content {
+  display: inline-block;
+  width: 512px !important;
+  background-color: #303030;
+}
+
+#blog-title {
+  font-size: 3rem;
+}
+
+a {
+  color: cyan;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}

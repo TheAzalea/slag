@@ -45,6 +45,7 @@ def build():
     shutil.rmtree("html", ignore_errors=True)
     generate("./posts", "./html/post")
     generate("./pages", "./html")
+    os.system("cp ./static/* ./html/ -r")
 
 if __name__ == "__main__":
     build()
