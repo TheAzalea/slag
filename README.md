@@ -1,1 +1,1 @@
-![slag](https://raw.githubusercontent.com/TheAzalea/slag/refs/heads/main/logo.png)
+![slag](https://github.com/TheAzalea/slag/blob/main/logo.png)
