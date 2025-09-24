@@ -14,10 +14,12 @@ specific page contents in.
 
 Markdown and HTML files support Python code evaluation in the format of:
 
-```python-eval
+```
+\`\`\`python-eval
 import math
 write(math.pi) # Use this function to insert text
 write("Pi times two is: " + str(math.pi * 2))
+\`\`\`
 ```
 
 The code is only evaluated at build. This can be used to generate a list of
