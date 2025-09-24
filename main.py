@@ -60,10 +60,10 @@ def generate(src_folder, dst_folder):
             f.write(html)
 
 def build():
-    shutil.rmtree("html", ignore_errors=True)
-    generate("./posts", "./html/post")
-    generate("./pages", "./html")
-    os.system("cp ./static/* ./html/ -r")
+    shutil.rmtree("output", ignore_errors=True)
+    generate("./posts", "./output/post")
+    generate("./pages", "./output")
+    os.system("cp ./static/* ./output/ -r")
 
 if __name__ == "__main__":
     build()
