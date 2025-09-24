@@ -63,7 +63,7 @@ def build():
     shutil.rmtree("output", ignore_errors=True)
     generate("./posts", "./output/post")
     generate("./pages", "./output")
-    os.system("cp ./static/* ./output/ -r")
+    os.system("cp ./static/.* ./static/* ./output/ -r")
 
 if __name__ == "__main__":
     build()
